@@ -10,6 +10,8 @@ def printGrid(a):
     print('''
 
 
+
+
     ''')
     print(a[0], '      |', a[1], '      |', a[2])
     print('        |         |')
@@ -47,10 +49,22 @@ def isSomeOneWin(arr, sym):
     )
 
 
-def isGameOver(arr):
-    return (not isSomeOneWin(arr, 'X') and not isSomeOneWin(arr, 'O') and
-    all([arr[i] != i+1 for i in range(len(arr))])
-    )
+def isBoardFull(arr):
+    return all([arr[i] != i+1 for i in range(len(arr) - 1)])
+
+def isGameover(sym1,sym2,player1,player2):
+    global arr
+
+    if isSomeOneWin(arr, sym1):
+        print('{} is the winner'.format(player1))
+        return True
+    if isSomeOneWin(arr, sym2):
+        print('{} is the winner'.format(player2))
+        return True
+    if isBoardFull(arr):
+        print('GAME OVER')
+        return True
+    return False
 
 
 def main():
@@ -68,14 +82,9 @@ def main():
     if firstMove == 0:
         print('{} will start first'.format(player1))
         while True:
-            if isSomeOneWin(arr, sym1):
-                print('{} is the winner'.format(player1))
-                break
-            if isSomeOneWin(arr, sym2):
-                print('{} is the winner'.format(player2))
-                break
-            if isGameOver(arr):
-                print('GAME OVER')
+
+            isGameover(sym1,sym2,player1,player2)
+            if isGameover(sym1,sym2,player1,player2):
                 break
 
             printGrid(arr)
@@ -86,6 +95,10 @@ def main():
             while arr[p1c - 1] == 'X' or arr[p1c - 1] == 'O':
                 p1c = int(input('Look at the board and Choose number from 1 to 9 : '))
             arr[p1c - 1] = sym1
+
+            isGameover(sym1,sym2,player1,player2)
+            if isGameover(sym1,sym2,player1,player2):
+                break
 
             printGrid(arr)
 
@@ -99,14 +112,8 @@ def main():
 
     if firstMove == 1:
         while True:
-            if isSomeOneWin(arr, sym1):
-                print('{} is the winner'.format(player1))
-                break
-            if isSomeOneWin(arr, sym2):
-                print('{} is the winner'.format(player2))
-                break
-            if isGameOver(arr):
-                print('GAME OVER')
+            isGameover(sym1,sym2,player1,player2)
+            if isGameover(sym1,sym2,player1,player2):
                 break
 
             printGrid(arr)
@@ -118,6 +125,10 @@ def main():
                 p2c = int(input('Look at the board and Choose number from 1 to 9 : '))
             arr[p2c - 1] = sym2
 
+            isGameover(sym1,sym2,player1,player2)
+            if isGameover(sym1,sym2,player1,player2):
+                break
+
             printGrid(arr)
 
             #player1 turn
@@ -127,6 +138,10 @@ def main():
                 p1c = int(input('Look at the board and Choose number from 1 to 9 : '))
             arr[p1c - 1] = sym1
 
+    again = input('do you want to play again : ')
+    if again.lower()[0] == 'y':
+        arr = [1,2,3,4,5,6,7,8,9]
+        main()
 
 
 if __name__ == '__main__':
